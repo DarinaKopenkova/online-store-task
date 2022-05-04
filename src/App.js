@@ -1,6 +1,9 @@
 import "./App.css";
 import "antd/dist/antd.min.css";
 import Cards from "./components/Cards/Cards";
+import ModalForm from "./components/ModalForm/ModalForm";
+import { useState } from "react";
+import { notification } from "antd";
 
 function App() {
   let dataItems = [
@@ -40,10 +43,35 @@ function App() {
     },
   ];
 
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedItem, setSelectedItem] = useState();
+
+  const showModal = (item) => {
+    setIsModalVisible(true);
+    setSelectedItem(item);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+    notification.success({
+      message: "Успешно!",
+      description: "Форма отправлена",
+    });
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
   return (
     <div className="App">
       <header className="App-header">
-        <Cards dataItems={dataItems} />
+        <Cards dataItems={dataItems} showModal={showModal} />
+        <ModalForm
+          selectedItem={selectedItem}
+          isModalVisible={isModalVisible}
+          handleOk={handleOk}
+          handleCancel={handleCancel}
+        />
       </header>
     </div>
   );
